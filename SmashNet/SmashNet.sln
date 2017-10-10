@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmashNet", "SmashNet\SmashNet.csproj", "{54111C33-1D9E-4AE5-B0BE-07AC39D8954B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmashNetTests", "SmashNetTests\SmashNetTests.csproj", "{2E57E229-655A-4C78-ADB1-2F8A3F0ED645}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{27793C1F-4554-4A61-A6F2-975F199D8A89}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{54111C33-1D9E-4AE5-B0BE-07AC39D8954B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54111C33-1D9E-4AE5-B0BE-07AC39D8954B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54111C33-1D9E-4AE5-B0BE-07AC39D8954B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E57E229-655A-4C78-ADB1-2F8A3F0ED645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E57E229-655A-4C78-ADB1-2F8A3F0ED645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E57E229-655A-4C78-ADB1-2F8A3F0ED645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E57E229-655A-4C78-ADB1-2F8A3F0ED645}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27793C1F-4554-4A61-A6F2-975F199D8A89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27793C1F-4554-4A61-A6F2-975F199D8A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27793C1F-4554-4A61-A6F2-975F199D8A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27793C1F-4554-4A61-A6F2-975F199D8A89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
