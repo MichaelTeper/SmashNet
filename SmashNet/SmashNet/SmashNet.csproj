@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Event.cs" />
+    <Compile Include="Model\Phase.cs" />
     <Compile Include="Model\Tournament.cs" />
     <Compile Include="SmashClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

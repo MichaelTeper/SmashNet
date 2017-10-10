@@ -31,10 +31,11 @@ namespace SmashNet
 
         public async Task<Tournament> GetTournamentAsync(string tournamentId)
         {
-            string json = await GetRawJsonAsync("tournament", tournamentId, "event");
-            JObject JRoot = JsonConvert.DeserializeObject<JObject>(json);
-            JToken JTournament = JRoot["entities"]["tournament"];
-            JToken JEvent = JRoot["entities"]["event"];
+            string json = await GetRawJsonAsync("tournament", tournamentId, "event", "phase");
+            JToken JEntities = JsonConvert.DeserializeObject<JObject>(json)["entities"];
+            JToken JTournament = JEntities["tournament"];
+            JToken JEvent = JEntities["event"];
+            JToken JPhase = JEntities["phase"];
 
             Tournament tournament = new Tournament
             {
@@ -49,7 +50,15 @@ namespace SmashNet
                     Name = e.Value<string>("name"),
                     GameName = e.Value<string>("gameName"),
                     StartTime = e.Value<int>("startAt"),
-                    EndTime = e.Value<int>("endAt")
+                    EndTime = e.Value<int>("endAt"),
+                    Phases = JPhase
+                        .Where(p => p.Value<int>("eventId") == e.Value<int>("id"))
+                        .Select(p => new Phase
+                        {
+                            Id = p.Value<int>("id"),
+                            Name = p.Value<string>("name"),
+                            Order = p.Value<int>("phaseOrder")
+                        })
                 })
             };
 
