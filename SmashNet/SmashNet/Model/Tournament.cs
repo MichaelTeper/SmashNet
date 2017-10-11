@@ -18,13 +18,22 @@ namespace SmashNet.Model
         public ICollection<Phase> Phases {
             get
             {
-                return Events.SelectMany(@event => @event.Phases).ToList();
+                return Events
+                    .SelectMany(@event => @event.Phases)
+                    .ToList();
             }
         }
 
         public ICollection<Phase> GetPhasesWithName(string name)
         {
-            return Phases.Where(phase => phase.Name.Equals(name)).ToList();
+            return Phases
+                .Where(phase => phase.Name.Equals(name))
+                .ToList();
+        }
+
+        public Phase GetPhaseWithId(int id)
+        {
+            return Phases.Single(phase => phase.Id == id);
         }
 
         public override string ToString()

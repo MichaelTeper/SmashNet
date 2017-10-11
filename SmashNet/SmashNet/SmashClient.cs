@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SmashNet
@@ -121,12 +120,30 @@ namespace SmashNet
 
             foreach (var bracketId in phase.BracketIds)
             {
-                JToken JEntities = await GetDeserializedJsonEntitiesAsync("phase_group", bracketId, "sets", "enterants", "standings", "seeds");
+                JToken JEntities = await GetDeserializedJsonEntitiesAsync("phase_group", bracketId, "sets", "seeds");
                 JToken JGroups = JEntities["groups"];
+                JToken JSets = JEntities["sets"];
+
                 phase.Brackets.Add(new Bracket
                 {
-                    Id = JGroups.Value<int>("id"),
-                    StartTime = JGroups.Value<int?>("startAt")
+                    Id = bracketId,
+                    StartTime = JGroups.Value<int?>("startAt"),
+                    Sets = JSets
+                        .Select(set => new Set
+                        {
+                            Id = set.Value<int>("id"),
+                            Name = set.Value<string>("fullRoundText"),
+                            Round = set.Value<int>("round"),
+                            BestOf = set.Value<int>("bestOf"),
+                            State = set.Value<int>("state"),
+                            EntrantId1 = set.Value<int?>("entrant1Id"),
+                            EntrantId2 = set.Value<int?>("entrant2Id"),
+                            Entrant1Score = set.Value<int?>("entrant1Score"),
+                            Entrant2Score = set.Value<int?>("entrant2Score"),
+                            WinnerEntrantId = set.Value<int?>("winnerId"),
+                            LoserEntrantId = set.Value<int?>("loserId")
+                        })
+                        .ToList()
                 });
             }
         }

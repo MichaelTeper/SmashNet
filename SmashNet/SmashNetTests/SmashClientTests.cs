@@ -12,11 +12,11 @@ namespace SmashNet.Tests
     [TestClass]
     public class SmashClientTests
     {
-        public static SmashClient Client { get; set; }
-        public static Tournament TheBigHouse { get; set; }
+        public SmashClient Client { get; set; }
+        public Tournament TheBigHouse { get; set; }
 
-        [AssemblyInitialize]
-        public static async Task AssemblyInit(TestContext context)
+        [TestInitialize]
+        public async Task AssemblyInit()
         {
             Client = new SmashClient();
             TheBigHouse = await Client.GetTournamentAsync("tbh5");
@@ -171,8 +171,10 @@ namespace SmashNet.Tests
 
             Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 1397).Brackets);
             Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 1398).Brackets);
-            var phase1399BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 1399).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase1399BracketIds.Count() == 1);
+            ICollection<Set> meleeTop64Sets = meleeTop64Phase
+                                            .Brackets.Single()
+                                            .Sets.ToList();
+            Assert.IsTrue(meleeTop64Sets.Count() == 95, "Expected sets : 95\nActual sets : " + meleeTop64Sets.Count());
             Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2718).Brackets);
             Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2719).Brackets);
             Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2804).Brackets);
