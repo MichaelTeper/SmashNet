@@ -11,8 +11,9 @@ namespace SmashNet.Model
         public int Id { get; set; }
         public string Name { get; set; }
         public string GameName { get; set; }
-        public int StartTime { get; set; }
-        public int EndTime { get; set; }
-        public IEnumerable<Phase> Phases { get; set; }
+        public int GameId { get; set; }
+        public int? StartTime { get; set; }
+        public int? EndTime { get; set; }
+        public ICollection<Phase> Phases { get; set; }
     }
 }

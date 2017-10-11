@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Bracket.cs" />
     <Compile Include="Model\Event.cs" />
+    <Compile Include="Model\Games.cs" />
     <Compile Include="Model\Phase.cs" />
     <Compile Include="Model\Tournament.cs" />
     <Compile Include="SmashClient.cs" />

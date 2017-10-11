@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,20 @@ namespace SmashNet.Model
         public int Id { get; set; }
         public string Name { get; set; }
         public string VenueAddress { get; set; }
-        public int StartTime { get; set; }
-        public int EndTime { get; set; }
-        public IEnumerable<Event> Events { get; set; }
+        public int? StartTime { get; set; }
+        public int? EndTime { get; set; }
+        public ICollection<Event> Events { get; set; }
+        public ICollection<Phase> Phases {
+            get
+            {
+                return Events.SelectMany(@event => @event.Phases).ToList();
+            }
+        }
+
+        public ICollection<Phase> GetPhasesWithName(string name)
+        {
+            return Phases.Where(phase => phase.Name.Equals(name)).ToList();
+        }
 
         public override string ToString()
         {
