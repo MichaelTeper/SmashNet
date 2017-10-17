@@ -16,7 +16,7 @@ Calling the GetTournamentAsync method will grab a specific tournament's informat
 ## A Look at the Tournament Model
 A tournament may contain many events. e.g. The Big House (tournament) has Melee Singles (phase) and Melee Doubles (phase).
 
-A event may contain many phases. e.g. Melee Singles (event) has Round 1 Pools (phase) and Top 64 (phase).
+An event may contain many phases. e.g. Melee Singles (event) has Round 1 Pools (phase) and Top 64 (phase).
 
 A phase may contain many brackets. e.g. Round 1 Pools (phase) has Pool A1 (bracket) and Pool C4 (bracket).
 
