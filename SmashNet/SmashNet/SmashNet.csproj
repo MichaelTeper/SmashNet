@@ -47,7 +47,7 @@
     <Compile Include="Exceptions\PhaseNotFoundException.cs" />
     <Compile Include="Exceptions\PlayerNotFoundException.cs" />
     <Compile Include="Exceptions\SetNotFoundException.cs" />
-    <Compile Include="JsonExtensionMethods.cs" />
+    <Compile Include="Model\JsonExtensionMethods.cs" />
     <Compile Include="Model\Bracket.cs" />
     <Compile Include="Model\Entrant.cs" />
     <Compile Include="Model\Event.cs" />
