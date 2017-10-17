@@ -62,7 +62,7 @@
     <Compile Include="Model\PhaseTests.cs" />
     <Compile Include="Model\TournamentTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmashClientTests.cs" />
+    <Compile Include="Web\SmashClientTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

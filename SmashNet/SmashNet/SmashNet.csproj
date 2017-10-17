@@ -57,7 +57,7 @@
     <Compile Include="Model\Set.cs" />
     <Compile Include="Model\SetStates.cs" />
     <Compile Include="Model\Tournament.cs" />
-    <Compile Include="SmashClient.cs" />
+    <Compile Include="Web\SmashClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
