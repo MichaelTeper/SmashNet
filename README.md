@@ -1,5 +1,7 @@
 # SmashNet
 The smash.gg API is particularly unintuitive and difficult to use. Additionally, smash.gg provides minimal guidance in the form of a surface-level explanation of the API. The purpose of SmashNet is to remove the bulk of that complexity and provide a relatively easy to use interface for smash.gg's service. 
+# Requirements
+Newtonsoft.Json 10.0.3
 # Step By Step Usage
 ## Connecting to Smash.gg
 The SmashClient class is responsible for connecting to and querying the the smash.gg API.
