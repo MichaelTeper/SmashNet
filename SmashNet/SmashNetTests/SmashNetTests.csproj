@@ -57,6 +57,9 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Model\BracketTests.cs" />
+    <Compile Include="Model\EventTests.cs" />
+    <Compile Include="Model\PhaseTests.cs" />
     <Compile Include="Model\TournamentTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmashClientTests.cs" />

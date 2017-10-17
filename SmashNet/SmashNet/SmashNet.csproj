@@ -43,10 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\EventNotFoundException.cs" />
+    <Compile Include="Exceptions\PhaseNotFoundException.cs" />
+    <Compile Include="Exceptions\PlayerNotFoundException.cs" />
+    <Compile Include="Exceptions\SetNotFoundException.cs" />
+    <Compile Include="JsonExtensionMethods.cs" />
     <Compile Include="Model\Bracket.cs" />
+    <Compile Include="Model\Entrant.cs" />
     <Compile Include="Model\Event.cs" />
     <Compile Include="Model\Games.cs" />
     <Compile Include="Model\Phase.cs" />
+    <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Set.cs" />
     <Compile Include="Model\SetStates.cs" />
     <Compile Include="Model\Tournament.cs" />

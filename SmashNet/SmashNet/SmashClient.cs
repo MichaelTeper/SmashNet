@@ -28,124 +28,71 @@ namespace SmashNet
             return await Client.GetStringAsync(endpoint);
         }
 
-        private async Task<JToken> GetDeserializedJsonEntitiesAsync(string objectType, int objectId, params string[] expands)
+        private async Task<JObject> GetDeserializedJsonAsync(string objectType, int objectId, params string[] expands)
         {
-            return await GetDeserializedJsonEntitiesAsync(objectType, objectId.ToString(), expands);
+            return await GetDeserializedJsonAsync(objectType, objectId.ToString(), expands);
         }
 
-        private async Task<JToken> GetDeserializedJsonEntitiesAsync(string objectType, string objectId, params string[] expands)
+        private async Task<JObject> GetDeserializedJsonAsync(string objectType, string objectId, params string[] expands)
         {
             string endpoint = objectType + "/" + objectId + "?expand[]=" + String.Join("&expand[]=", expands);
             string json = await Client.GetStringAsync(endpoint);
-            return JsonConvert.DeserializeObject<JObject>(json)["entities"];
+            return JsonConvert.DeserializeObject<JObject>(json);
         }
 
         public async Task<Tournament> GetTournamentAsync(string tournamentId)
         {
-            JToken JEntities = await GetDeserializedJsonEntitiesAsync("tournament", tournamentId, "event", "phase", "groups");
-            JToken JTournament = JEntities["tournament"];
-            JToken JEvent = JEntities["event"];
-            JToken JPhase = JEntities["phase"];
-            JToken JGroups = JEntities["groups"];
-
-            Tournament tournament = new Tournament
-            {
-                Id = JTournament.Value<int>("id"),
-                Name = JTournament.Value<string>("name"),
-                StartTime = JTournament.Value<int?>("startAt"),
-                EndTime = JTournament.Value<int?>("endAt"),
-                VenueAddress = JTournament.Value<string>("venueAddress"),
-                Events = JEvent.Select(@event => new Event
-                {
-                    Id = @event.Value<int>("id"),
-                    Name = @event.Value<string>("name"),
-                    GameName = @event.Value<string>("gameName"),
-                    GameId = @event.Value<int>("videogameId"),
-                    StartTime = @event.Value<int?>("startAt"),
-                    EndTime = @event.Value<int?>("endAt"),
-                    Phases = JPhase
-                        .Where(phase => phase.Value<int>("eventId") == @event.Value<int>("id"))
-                        .Select(phase => new Phase
-                        {
-                            Id = phase.Value<int>("id"),
-                            Name = phase.Value<string>("name"),
-                            Order = phase.Value<int>("phaseOrder"),
-                            BracketIds = JGroups
-                                .Where(bracket => bracket.Value<int>("phaseId") == phase.Value<int>("id"))
-                                .Select(bracket => bracket.Value<int>("id"))
-                                .ToList()
-                        })
-                        .ToList()
-                })
-                .ToList()
-            };
+            JObject JTournamentRoot = await GetDeserializedJsonAsync("tournament", tournamentId, "event", "phase", "groups");
+            Tournament tournament = Tournament.MakeFromJObject(JTournamentRoot);
 
             return tournament;
         }
 
-        public async Task GetAllBracketsForTournamentAsync(Tournament tournament)
+        public async Task GetAllBracketInfoForTournamentAsync(Tournament tournament)
         {
-            foreach (Phase phase in tournament.Phases)
+            foreach (Bracket bracket in tournament.Brackets)
             {
-                await GetAllBracketsForPhaseAsync(phase);
+                await GetBracketInfoForAsync(bracket);
             }
         }
 
-        public async Task GetAllBracketsForGameAsync(Tournament tournament, Games game)
+        public async Task GetAllBracketInfoForGameAsync(Tournament tournament, Games game)
         {
-            await GetAllBracketsForGameAsync(tournament, (int)game);
+            await GetAllBracketInfoForGameAsync(tournament, (int)game);
         }
 
-        public async Task GetAllBracketsForGameAsync(Tournament tournament, int gameId)
+        public async Task GetAllBracketInfoForGameAsync(Tournament tournament, int gameId)
         {
-            ICollection<Event> events = tournament.Events.Where(@event => @event.GameId == gameId).ToList();
+            var gameEvents = tournament.Events
+                .Where(@event => @event.GameId == gameId);
 
-            foreach(Event @event in events)
+            foreach (Event @event in gameEvents)
             {
-                await GetAllBracketsForEventAsync(@event);
+                await GetAllBracketInfoForEventAsync(@event);
             }
         }
 
-        public async Task GetAllBracketsForEventAsync(Event @event)
+        public async Task GetAllBracketInfoForEventAsync(Event @event)
         {
             foreach (Phase phase in @event.Phases)
             {
-                await GetAllBracketsForPhaseAsync(phase);
+                await GetAllBracketInfoForPhaseAsync(phase);
             }
         }
 
-        public async Task GetAllBracketsForPhaseAsync(Phase phase)
+        public async Task GetAllBracketInfoForPhaseAsync(Phase phase)
         {
-            phase.Brackets = new List<Bracket>();
-
-            foreach (var bracketId in phase.BracketIds)
+            foreach (Bracket bracket in phase.Brackets)
             {
-                JToken JEntities = await GetDeserializedJsonEntitiesAsync("phase_group", bracketId, "sets", "seeds");
-                JToken JGroups = JEntities["groups"];
-                JToken JSets = JEntities["sets"];
-
-                phase.Brackets.Add(new Bracket
-                {
-                    Id = bracketId,
-                    StartTime = JGroups.Value<int?>("startAt"),
-                    Sets = JSets
-                        .Select(set => new Set
-                        {
-                            Id = set.Value<int>("id"),
-                            Name = set.Value<string>("fullRoundText"),
-                            Round = set.Value<int>("round"),
-                            BestOf = set.Value<int>("bestOf"),
-                            State = set.Value<int>("state"),
-                            EntrantId1 = set.Value<int?>("entrant1Id"),
-                            EntrantId2 = set.Value<int?>("entrant2Id"),
-                            Entrant1Score = set.Value<int?>("entrant1Score"),
-                            Entrant2Score = set.Value<int?>("entrant2Score"),
-                            WinnerEntrantId = set.Value<int?>("winnerId"),
-                            LoserEntrantId = set.Value<int?>("loserId")
-                        })
-                        .ToList()
-                });
+                await GetBracketInfoForAsync(bracket);
             }
+        }
+
+        public async Task<Bracket> GetBracketInfoForAsync(Bracket bracket)
+        {
+            JObject JBracketRoot = await GetDeserializedJsonAsync("phase_group", bracket.Id, "sets", "seeds", "entrants");
+            bracket.GetInfoFromJObject(JBracketRoot);
+            return bracket;
         }
     }
 }

@@ -27,15 +27,18 @@ namespace SmashNet.Tests
         {
             foreach (var phase in TheBigHouse.Phases)
             {
-                phase.Brackets = null;
+                foreach (var bracket in phase.Brackets)
+                {
+                    bracket.Sets = null;
+                    bracket.Entrants = null;
+                }
             }
         }
 
         [TestMethod]
         public void GetTournamentAsyncTest()
         {
-            var eventList = TheBigHouse.Events.ToList();
-            var phaseList = eventList.SelectMany(@event => @event.Phases).ToList();
+            var phases = TheBigHouse.Phases;
 
             //Tournament Data
             Assert.AreEqual(1102, TheBigHouse.Id);
@@ -79,112 +82,158 @@ namespace SmashNet.Tests
         }
 
         [TestMethod]
-        public async Task GetAllBracketsForTournamentAsyncTest()
+        public async Task GetAllBracketInfoForTournamentAsyncTest()
         {
-            await Client.GetAllBracketsForTournamentAsync(TheBigHouse);
+            await Client.GetAllBracketInfoForTournamentAsync(TheBigHouse);
 
-            var phase1397BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 1397).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase1397BracketIds.Count() == 64);
-            var phase1398BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 1398).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase1398BracketIds.Count() == 16);
-            var phase1399BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 1399).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase1399BracketIds.Count() == 1);
-            var phase2718BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2718).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2718BracketIds.Count() == 16);
-            var phase2719BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2719).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2719BracketIds.Count() == 2);
-            var phase2804BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2804).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2804BracketIds.Count() == 1);
-            var phase2720BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2720).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2720BracketIds.Count() == 32);
-            var phase2721BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2721).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2721BracketIds.Count() == 8);
-            var phase2722BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2722).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2722BracketIds.Count() == 1);
-            var phase2723BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2723).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2723BracketIds.Count() == 8);
-            var phase2724BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2724).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2724BracketIds.Count() == 2);
-            var phase2805BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2805).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2805BracketIds.Count() == 1);
-            var phase2891BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2891).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2891BracketIds.Count() == 1);
+            var phase1397SetsCount = TheBigHouse.GetPhaseWithId(1397).Sets.Count();
+            Assert.IsTrue(phase1397SetsCount == 3621, "Expected Set Count : 3621\nActual Set Count : " + phase1397SetsCount);
+            var phase1398SetsCount = TheBigHouse.GetPhaseWithId(1398).Sets.Count();
+            Assert.IsTrue(phase1398SetsCount == 320, "Expected Set Count : 320\nActual Set Count : " + phase1398SetsCount);
+            var phase1399SetsCount = TheBigHouse.GetPhaseWithId(1399).Sets.Count();
+            Assert.IsTrue(phase1399SetsCount == 94, "Expected Set Count : 94\nActual Set Count : " + phase1399SetsCount);
+            var phase2718SetsCount = TheBigHouse.GetPhaseWithId(2718).Sets.Count();
+            Assert.IsTrue(phase2718SetsCount == 480, "Expected Set Count : 480\nActual Set Count : " + phase2718SetsCount);
+            var phase2719SetsCount = TheBigHouse.GetPhaseWithId(2719).Sets.Count();
+            Assert.IsTrue(phase2719SetsCount == 40, "Expected Set Count : 40\nActual Set Count : " + phase2719SetsCount);
+            var phase2804SetsCount = TheBigHouse.GetPhaseWithId(2804).Sets.Count();
+            Assert.IsTrue(phase2804SetsCount == 10, "Expected Set Count : 10\nActual Set Count : " + phase2804SetsCount);
+            var phase2720SetsCount = TheBigHouse.GetPhaseWithId(2720).Sets.Count();
+            Assert.IsTrue(phase2720SetsCount == 896, "Expected Set Count : 896\nActual Set Count : " + phase2720SetsCount);
+            var phase2721SetsCount = TheBigHouse.GetPhaseWithId(2721).Sets.Count();
+            Assert.IsTrue(phase2721SetsCount == 160, "Expected Set Count : 160\nActual Set Count : " + phase2721SetsCount);
+            var phase2722SetsCount = TheBigHouse.GetPhaseWithId(2722).Sets.Count();
+            Assert.IsTrue(phase2722SetsCount == 47, "Expected Set Count : 47\nActual Set Count : " + phase2722SetsCount);
+            var phase2723SetsCount = TheBigHouse.GetPhaseWithId(2723).Sets.Count();
+            Assert.IsTrue(phase2723SetsCount == 224, "Expected Set Count : 224\nActual Set Count : " + phase2723SetsCount);
+            var phase2724SetsCount = TheBigHouse.GetPhaseWithId(2724).Sets.Count();
+            Assert.IsTrue(phase2724SetsCount == 40, "Expected Set Count : 40\nActual Set Count : " + phase2724SetsCount);
+            var phase2805SetsCount = TheBigHouse.GetPhaseWithId(2805).Sets.Count();
+            Assert.IsTrue(phase2805SetsCount == 10, "Expected Set Count : 10\nActual Set Count : " + phase2805SetsCount);
+            var phase2891SetsCount = TheBigHouse.GetPhaseWithId(2891).Sets.Count();
+            Assert.IsTrue(phase2891SetsCount == 7, "Expected Set Count : 7\nActual Set Count : " + phase2891SetsCount);
         }
 
         [TestMethod]
-        public async Task GetAllBracketsForGameAsyncTest()
+        public async Task GetAllBracketInfoForGameAsyncTest()
         {
-            await Client.GetAllBracketsForGameAsync(TheBigHouse, Games.Melee);
+            await Client.GetAllBracketInfoForGameAsync(TheBigHouse, Games.Melee);
 
-            var phase1397BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 1397).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase1397BracketIds.Count() == 64);
-            var phase1398BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 1398).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase1398BracketIds.Count() == 16);
-            var phase1399BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 1399).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase1399BracketIds.Count() == 1);
-            var phase2718BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2718).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2718BracketIds.Count() == 16);
-            var phase2719BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2719).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2719BracketIds.Count() == 2);
-            var phase2804BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2804).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2804BracketIds.Count() == 1);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2720).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2721).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2722).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2723).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2724).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2805).Brackets);
-            var phase2891BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 2891).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase2891BracketIds.Count() == 1);
+            var phase1397SetsCount = TheBigHouse.GetPhaseWithId(1397).Sets.Count();
+            Assert.IsTrue(phase1397SetsCount == 3621, "Expected Set Count : 3621\nActual Set Count : " + phase1397SetsCount);
+            var phase1398SetsCount = TheBigHouse.GetPhaseWithId(1398).Sets.Count();
+            Assert.IsTrue(phase1398SetsCount == 320, "Expected Set Count : 320\nActual Set Count : " + phase1398SetsCount);
+            var phase1399SetsCount = TheBigHouse.GetPhaseWithId(1399).Sets.Count();
+            Assert.IsTrue(phase1399SetsCount == 94, "Expected Set Count : 94\nActual Set Count : " + phase1399SetsCount);
+            var phase2718SetsCount = TheBigHouse.GetPhaseWithId(2718).Sets.Count();
+            Assert.IsTrue(phase2718SetsCount == 480, "Expected Set Count : 480\nActual Set Count : " + phase2718SetsCount);
+            var phase2719SetsCount = TheBigHouse.GetPhaseWithId(2719).Sets.Count();
+            Assert.IsTrue(phase2719SetsCount == 40, "Expected Set Count : 40\nActual Set Count : " + phase2719SetsCount);
+            var phase2804SetsCount = TheBigHouse.GetPhaseWithId(2804).Sets.Count();
+            Assert.IsTrue(phase2804SetsCount == 10, "Expected Set Count : 10\nActual Set Count : " + phase2804SetsCount);
+            var phase2720SetsCount = TheBigHouse.GetPhaseWithId(2720).Sets.Count();
+            Assert.IsTrue(phase2720SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2720SetsCount);
+            var phase2721SetsCount = TheBigHouse.GetPhaseWithId(2721).Sets.Count();
+            Assert.IsTrue(phase2721SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2721SetsCount);
+            var phase2722SetsCount = TheBigHouse.GetPhaseWithId(2722).Sets.Count();
+            Assert.IsTrue(phase2722SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2722SetsCount);
+            var phase2723SetsCount = TheBigHouse.GetPhaseWithId(2723).Sets.Count();
+            Assert.IsTrue(phase2723SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2723SetsCount);
+            var phase2724SetsCount = TheBigHouse.GetPhaseWithId(2724).Sets.Count();
+            Assert.IsTrue(phase2724SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2724SetsCount);
+            var phase2805SetsCount = TheBigHouse.GetPhaseWithId(2805).Sets.Count();
+            Assert.IsTrue(phase2805SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2805SetsCount);
+            var phase2891SetsCount = TheBigHouse.GetPhaseWithId(2891).Sets.Count();
+            Assert.IsTrue(phase2891SetsCount == 7, "Expected Set Count : 7\nActual Set Count : " + phase2891SetsCount);
         }
 
         [TestMethod]
-        public async Task GetAllBracketsForEventAsyncTest()
+        public async Task GetAllBracketInfoForEventAsyncTest()
         {
-            Event meleeSinglesEvent = TheBigHouse.Events.Single(@event => @event.Id == 10300);
-            await Client.GetAllBracketsForEventAsync(meleeSinglesEvent);
+            await Client.GetAllBracketInfoForEventAsync(TheBigHouse.GetEventWithId(10300));
 
-            var phase1397BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 1397).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase1397BracketIds.Count() == 64);
-            var phase1398BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 1398).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase1398BracketIds.Count() == 16);
-            var phase1399BracketIds = TheBigHouse.Phases.Single(phase => phase.Id == 1399).Brackets.Select(bracket => bracket.Id);
-            Assert.IsTrue(phase1399BracketIds.Count() == 1);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2718).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2719).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2804).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2720).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2721).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2722).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2723).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2724).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2805).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2891).Brackets);
+            var phase1397SetsCount = TheBigHouse.GetPhaseWithId(1397).Sets.Count();
+            Assert.IsTrue(phase1397SetsCount == 3621, "Expected Set Count : 3621\nActual Set Count : " + phase1397SetsCount);
+            var phase1398SetsCount = TheBigHouse.GetPhaseWithId(1398).Sets.Count();
+            Assert.IsTrue(phase1398SetsCount == 320, "Expected Set Count : 320\nActual Set Count : " + phase1398SetsCount);
+            var phase1399SetsCount = TheBigHouse.GetPhaseWithId(1399).Sets.Count();
+            Assert.IsTrue(phase1399SetsCount == 94, "Expected Set Count : 94\nActual Set Count : " + phase1399SetsCount);
+            var phase2718SetsCount = TheBigHouse.GetPhaseWithId(2718).Sets.Count();
+            Assert.IsTrue(phase2718SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2718SetsCount);
+            var phase2719SetsCount = TheBigHouse.GetPhaseWithId(2719).Sets.Count();
+            Assert.IsTrue(phase2719SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2719SetsCount);
+            var phase2804SetsCount = TheBigHouse.GetPhaseWithId(2804).Sets.Count();
+            Assert.IsTrue(phase2804SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2804SetsCount);
+            var phase2720SetsCount = TheBigHouse.GetPhaseWithId(2720).Sets.Count();
+            Assert.IsTrue(phase2720SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2720SetsCount);
+            var phase2721SetsCount = TheBigHouse.GetPhaseWithId(2721).Sets.Count();
+            Assert.IsTrue(phase2721SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2721SetsCount);
+            var phase2722SetsCount = TheBigHouse.GetPhaseWithId(2722).Sets.Count();
+            Assert.IsTrue(phase2722SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2722SetsCount);
+            var phase2723SetsCount = TheBigHouse.GetPhaseWithId(2723).Sets.Count();
+            Assert.IsTrue(phase2723SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2723SetsCount);
+            var phase2724SetsCount = TheBigHouse.GetPhaseWithId(2724).Sets.Count();
+            Assert.IsTrue(phase2724SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2724SetsCount);
+            var phase2805SetsCount = TheBigHouse.GetPhaseWithId(2805).Sets.Count();
+            Assert.IsTrue(phase2805SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2805SetsCount);
+            var phase2891SetsCount = TheBigHouse.GetPhaseWithId(2891).Sets.Count();
+            Assert.IsTrue(phase2891SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2891SetsCount);
         }
 
 
         [TestMethod]
-        public async Task GetAllBracketsForPhaseAsyncTest()
+        public async Task GetAllBracketInfoForPhaseAsyncTest()
         {
-            Phase meleeTop64Phase = TheBigHouse.Phases.Single(phase => phase.Id == 1399);
-            await Client.GetAllBracketsForPhaseAsync(meleeTop64Phase);
+            await Client.GetAllBracketInfoForPhaseAsync(TheBigHouse.GetPhaseWithId(1399));
 
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 1397).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 1398).Brackets);
-            ICollection<Set> meleeTop64Sets = meleeTop64Phase
-                                            .Brackets.Single()
-                                            .Sets.ToList();
-            Assert.IsTrue(meleeTop64Sets.Count() == 95, "Expected sets : 95\nActual sets : " + meleeTop64Sets.Count());
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2718).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2719).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2804).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2720).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2721).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2722).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2723).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2724).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2805).Brackets);
-            Assert.IsNull(TheBigHouse.Phases.Single(phase => phase.Id == 2891).Brackets);
+            var phase1397SetsCount = TheBigHouse.GetPhaseWithId(1397).Sets.Count();
+            Assert.IsTrue(phase1397SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase1397SetsCount);
+            var phase1398SetsCount = TheBigHouse.GetPhaseWithId(1398).Sets.Count();
+            Assert.IsTrue(phase1398SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase1398SetsCount);
+            var phase1399SetsCount = TheBigHouse.GetPhaseWithId(1399).Sets.Count();
+            Assert.IsTrue(phase1399SetsCount == 94, "Expected Set Count : 94\nActual Set Count : " + phase1399SetsCount);
+            var phase2718SetsCount = TheBigHouse.GetPhaseWithId(2718).Sets.Count();
+            Assert.IsTrue(phase2718SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2718SetsCount);
+            var phase2719SetsCount = TheBigHouse.GetPhaseWithId(2719).Sets.Count();
+            Assert.IsTrue(phase2719SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2719SetsCount);
+            var phase2804SetsCount = TheBigHouse.GetPhaseWithId(2804).Sets.Count();
+            Assert.IsTrue(phase2804SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2804SetsCount);
+            var phase2720SetsCount = TheBigHouse.GetPhaseWithId(2720).Sets.Count();
+            Assert.IsTrue(phase2720SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2720SetsCount);
+            var phase2721SetsCount = TheBigHouse.GetPhaseWithId(2721).Sets.Count();
+            Assert.IsTrue(phase2721SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2721SetsCount);
+            var phase2722SetsCount = TheBigHouse.GetPhaseWithId(2722).Sets.Count();
+            Assert.IsTrue(phase2722SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2722SetsCount);
+            var phase2723SetsCount = TheBigHouse.GetPhaseWithId(2723).Sets.Count();
+            Assert.IsTrue(phase2723SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2723SetsCount);
+            var phase2724SetsCount = TheBigHouse.GetPhaseWithId(2724).Sets.Count();
+            Assert.IsTrue(phase2724SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2724SetsCount);
+            var phase2805SetsCount = TheBigHouse.GetPhaseWithId(2805).Sets.Count();
+            Assert.IsTrue(phase2805SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2805SetsCount);
+            var phase2891SetsCount = TheBigHouse.GetPhaseWithId(2891).Sets.Count();
+            Assert.IsTrue(phase2891SetsCount == 0, "Expected Set Count : 0\nActual Set Count : " + phase2891SetsCount);
+        }
+
+        [TestMethod]
+        public async Task GetBracketInfoForAsyncTest()
+        {
+            Phase meleeRound2Pools = TheBigHouse.GetPhaseWithId(1398);
+            Bracket meleePoolK1 = meleeRound2Pools.GetBracketWithId(8214);
+
+            await Client.GetBracketInfoForAsync(meleePoolK1);
+
+            IEnumerable<Set> meleePoolK1Sets = TheBigHouse.GetPhaseWithId(1398).GetBracketWithId(8214).Sets;
+
+            Assert.IsTrue(meleePoolK1Sets.Count() == 20, "Expected sets : 20\nActual sets : " + meleePoolK1Sets.Count());
+
+            Phase top64Phase = TheBigHouse.GetPhaseWithId(1399);
+            Bracket top64Bracket = top64Phase.GetBracketWithId(4106);
+
+            await Client.GetBracketInfoForAsync(top64Bracket);
+
+            IEnumerable<Set> top64BracketSets = TheBigHouse.GetPhaseWithId(1399).GetBracketWithId(4106).Sets;
+
+            Assert.IsTrue(top64BracketSets.Count() == 94, "Expected sets : 94\nActual sets : " + top64BracketSets.Count());
         }
     }
 }

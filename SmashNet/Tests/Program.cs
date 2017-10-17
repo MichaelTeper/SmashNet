@@ -12,17 +12,17 @@ namespace Tests
     {
         static void Main(string[] args)
         {
-
             RunAsync().Wait();
         }
 
         public static async Task RunAsync()
         {
-
             SmashClient client = new SmashClient();
-            Tournament tournament = await client.GetTournamentAsync("tbh5");
-            Console.WriteLine(tournament);
-            Console.ReadLine();
+            Tournament t = await client.GetTournamentAsync("tbh5");
+            foreach (Event e in t.Events)
+            {
+                e.Id = 0;
+            }
         }
     }
 }
